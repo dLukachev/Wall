@@ -3,4 +3,4 @@ sqlalchemy
 alembic
 redis
 python-dotenv
-uvicorn
+Uvicorn
