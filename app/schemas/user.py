@@ -20,3 +20,7 @@ class RegisterResponse(BaseModel):
     token_type: str
 
     model_config = {"from_attributes": True}
+
+class UserLogin(BaseModel):
+    nickname: str
+    password: str
