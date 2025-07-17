@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.schemas.user import UserLogin, UserCreate, UserRead, RegisterResponse
 from app.models.users import User
@@ -8,6 +9,7 @@ from app.api.deps import get_db
 
 from app.utils.jwt import create_access_token
 from app.utils.security import verify_password
+from app.utils.jwt import decode_access_token
 
 router = APIRouter()
 
@@ -15,6 +17,30 @@ router = APIRouter()
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     return {"users": [UserRead.model_validate(user) for user in users]}
+
+
+@router.get("/check")
+def get_current_user(
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db)
+):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
+    
+    token = authorization.split(" ")[1]
+    try:
+        payload = decode_access_token(token)
+        nickname = payload.get("sub")
+        if not nickname:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        user = db.query(User).filter_by(nickname=nickname).first()
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+        
+        return UserRead.model_validate(user)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 
 @router.post("/register", response_model=RegisterResponse)
