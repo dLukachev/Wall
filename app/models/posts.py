@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models.users import Base
+from app.models.base import Base
 import datetime
 
 class Post(Base):
@@ -11,4 +11,4 @@ class Post(Base):
     created_at = Column(DateTime, default=datetime.datetime.now(datetime.UTC))
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    user = relationship('User', back_populates='posts')
+    user = relationship('app.models.users.User', back_populates='posts')

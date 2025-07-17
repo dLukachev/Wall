@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models.users import Base
+from app.models.base import Base
 import datetime
 
 class Post(Base):
@@ -10,5 +10,5 @@ class Post(Base):
     post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)  # Какой пост
     created_at = Column(DateTime, default=datetime.datetime.now(datetime.UTC))  # Когда размещён на стене
 
-    user = relationship('User', backref='wall_posts')
-    post = relationship('Post', backref='wall_entries')
+    user = relationship('app.models.users.User', backref='wall_posts')
+    post = relationship('app.models.posts.Post', backref='wall_entries')
