@@ -16,8 +16,8 @@ router = APIRouter()
 
 
 @router.get('/posts')
-def get_p(db: Session = Depends(get_db)):
-    posts = get_post(db)
+def get_p(db: Session = Depends(get_db), limit: int = 20, offset: int = 0):
+    posts = get_post(db, limit=limit, offset=offset)
     return {"posts": [PostRead.model_validate(post) for post in posts]}
 
 
