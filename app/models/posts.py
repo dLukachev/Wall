@@ -8,6 +8,7 @@ class Post(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=False)
     content = Column(String, nullable=False)
+    img = Column(String(100), nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.now(datetime.UTC))
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
