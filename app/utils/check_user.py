@@ -4,6 +4,7 @@ from app.models.users import User
 from app.schemas.user import UserRead
 
 
+# Получение авторизации текущего пользователя
 def get_current_user(authorization, db):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid authorization header")

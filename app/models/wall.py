@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.models.base import Base
 import datetime
 
-class Post(Base):
+# Модель стены
+class Wall(Base):
     __tablename__ = 'wall'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)  # На чьей стене пост

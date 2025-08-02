@@ -3,6 +3,7 @@ from app.models.base import Base
 from sqlalchemy.orm import relationship
 import datetime
 
+# Модель пользователя
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)

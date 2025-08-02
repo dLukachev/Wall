@@ -4,6 +4,7 @@ from app.schemas.user import UserCreate
 from app.utils.security import get_password_hash
 import datetime
 
+# Создание пользователя
 def create_user(db: Session, user_in: UserCreate) -> User:
     hash_password = get_password_hash(user_in.password)
     db_user = User(

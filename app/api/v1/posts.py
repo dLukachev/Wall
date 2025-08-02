@@ -14,13 +14,13 @@ from app.utils.check_user import get_current_user
 
 router = APIRouter()
 
-
+# Получение всех постов
 @router.get('/posts')
 def get_p(db: Session = Depends(get_db), limit: int = 20, offset: int = 0):
     posts = get_post(db, limit=limit, offset=offset)
     return {"posts": [PostRead.model_validate(post) for post in posts]}
 
-
+# Создание поста
 @router.post('/posts')
 def create_p(post_in: PostBase, 
              authorization: Optional[str] = Header(None), 
@@ -32,7 +32,7 @@ def create_p(post_in: PostBase,
 
     return {'post': PostBase.model_validate(post, from_attributes=True)}
 
-
+# Обновление поста
 @router.put('/posts/{post_id}', response_model=PostRead)
 def update_p(
     post_id: int,
@@ -44,7 +44,7 @@ def update_p(
     updated_post = update_post(db, post_id, post_in)
     return PostRead.model_validate(updated_post)
 
-
+# Удаление поста
 @router.delete('/posts/{post_id}', status_code=204)
 def delete_p(
     post_id: int,

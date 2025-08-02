@@ -3,10 +3,12 @@ from app.models.posts import Post
 from app.schemas.posts import PostBase
 import datetime
 
+# Создание поста
 def create_post(db: Session, post_in: PostBase, user_id: int) -> Post:
     db_post = Post(
         title = post_in.title,
         content = post_in.content,
+        img = post_in.img,
         created_at = datetime.datetime.now(datetime.UTC),
         user_id=user_id
     )

@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.posts import Post
 from app.schemas.posts import PostUpdate
 
+# Обновление поста
 def update_post(db: Session, post_id: int, post_in: PostUpdate):
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:

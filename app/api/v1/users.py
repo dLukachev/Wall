@@ -15,20 +15,20 @@ from app.utils.check_user import get_current_user
 
 router = APIRouter()
 
+# Получение всех пользователей
 @router.get("/users")
 def get_users_endpoint(db: Session = Depends(get_db)):
     users = get_users(db)
     return {"users": [UserRead.model_validate(user) for user in users]}
 
-
+# Проверка сессии пользователя
 @router.get("/check")
 def get_current_user_session(
     authorization: Optional[str] = Header(None),
     db: Session = Depends(get_db)):
     get_current_user(authorization, db)
 
-
-
+# Регистрация пользователя
 @router.post("/register", response_model=RegisterResponse)
 def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter_by(nickname=user_in.nickname).first()
@@ -41,7 +41,7 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)):
 
     return {"user": UserRead.model_validate(user), "access_token": access_token, "token_type": "bearer"}
 
-
+# Вход в систему
 @router.post("/login")
 def login(user_in: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter_by(nickname=user_in.nickname).first()
@@ -53,7 +53,7 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
 
     return {"access_token": access_token, "token_type": "bearer"}
 
-
+# Удаление всех пользователей
 @router.delete("/users")
 def delete_all_users_endpoint(db: Session = Depends(get_db)):
     deleted_count = delete_all_users(db)

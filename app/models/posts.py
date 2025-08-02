@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from app.models.base import Base
 import datetime
 
+# Модель поста
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True)
